@@ -54,6 +54,8 @@ PCF_DOMAIN: PCF Domain for your apps.
 
 	Follow the instructions from this [Apigee Edge Microgateway for Cloud Foundry Page](https://github.com/apigee/pivotal-cf-apigee/tree/master/microgateway-addons)
 	
+	Or you can follow these instructions from the lab (The Lab still has all the details of what each of the commands) 
+	
 	```
 	git clone https://github.com/apigee-internal/microgateway
 	cd microgateway
