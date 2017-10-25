@@ -82,7 +82,7 @@ PCF_DOMAIN: PCF Domain for your apps.
 	- name: {your_initials}-edgemicro-app
 	  memory: 512M
 	  instances: 1
-	  host: edgemicro-app1
+	  host: {your_initials}-edgemicro-app
 	  path: .
 	  buildpack: nodejs_buildpack
 	  env:
