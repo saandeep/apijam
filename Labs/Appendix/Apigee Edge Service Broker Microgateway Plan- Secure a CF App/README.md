@@ -36,6 +36,10 @@ PCF_ORG: The instance of your PCF deployment. If you are familiar with PCF, you 
 
 PCF_SPACE: An org can contain multiple spaces. This is the space you will pick for this lab
 
+PCF_API: PCF API Endpoint
+
+PCF_DOMAIN: PCF Domain for your apps. 
+
 0. Setup Environment Variables
    ```
    export PCF_API={CF-API}
@@ -46,9 +50,14 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
    export APIGEE_ENV={env-name}
    ```
 
-1. Login to the PCF Environment
-    Open Shell (CLI for windows). CD to your working directory
+1. Deploy Edge Microgateway as PCF App
 
+	Follow the instructions from this [Apigee Edge Microgateway for Cloud Foundry Page](https://github.com/apigee/pivotal-cf-apigee/tree/master/microgateway-addons)
+
+2. Deploy a sample App to PCF
+
+	Login to the PCF Environment if not already logged in
+	
     ```
     cf api $PCF_API  --skip-ssl-validation
 
@@ -62,9 +71,7 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
     cf target -o $PCF_ORG -s $PCF_SPACE
     ```
 
-
-2. Deploy a sample App to PCF
-    We will use a sample hello world node.js app from this [git repo](https://github.com/apigee/pivotal-cf-apigee)
+    We will use the sample hello world node.js app from this [git repo](https://github.com/apigee/pivotal-cf-apigee)
 
     ```
     git clone https://github.com/apigee/pivotal-cf-apigee.git
@@ -73,18 +80,18 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
     ```
     
     Open manifest.yml file and change the following paramaters
-    **name**: {your_initials}_helloapi
-    **host**: {your_initials}_helloapi
+    **name**: {your_initials}_helloapi_mg
+    **host**: {your_initials}_helloapi_mg
     
     ```
     vi manifest.yml
-    name: {your_initials}_helloapi
-    host: {your_initials}_helloapi
+    name: {your_initials}_helloapi_mg
+    host: {your_initials}_helloapi_mg
     ```
 
     export hostname
     ```
-    export PCF_APPHOST={your_initials}_helloapi
+    export PCF_APPHOST={your_initials}_helloapi_mg
     ```
 
     Push the API to PCF
@@ -107,10 +114,11 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
     OK
 
    name              requested state   instances   memory   disk   urls
-   {your_initials}_helloapi   started           1/1         128M     1G     {your_initials}_helloapi.apps.pcf.apigeek.net
+   {your_initials}_helloapi_mg   started           1/1         128M     1G     {your_initials}_helloapi_mg.apps.pcf.apigeek.net
+   
    ```
    i.e http://{your_initials}_helloapi.{PCF DOMAIN}/ in the above example
-    
+      
 3. Login to Apigee, through Apigee's SSO
 
     If you are on Linux/mac, the following commands should give you a valid token that you can use for the next step
@@ -141,17 +149,17 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
     ```
     This should show apigee-edge as one of the available services.
     ```
-    cf create-service apigee-edge org apigee_org_service -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'"}'
+    cf create-service apigee-edge microgateway apigee_mg_service -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'"}'
     ```
     
     To check that the service has been enabled, try the following command
     
     ```
-    cf service apigee_org_service
+    cf service apigee_mg_service
     ```
     Now we will bind the app (Our Node.js app that servers the Hello API) to an Apigee ORG with the following command.
     ```
-    cf bind-route-service apigee_org_service $PCF_ORG --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'", "action":"proxy bind"}'
+    cf bind-route-service apigee_mg_service $PCF_ORG --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'","micro":"edgemicro-app.apps.apigee-demo.net", "action":"proxy bind", "protocol":"http"}'
     ```
 	
 	
