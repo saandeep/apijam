@@ -151,7 +151,7 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
     ```
     Now we will bind the app (Our Node.js app that servers the Hello API) to an Apigee ORG with the following command.
     ```
-    cf bind-route-service apigee_org_service $PCF_ORG --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'", "action":"proxy bind"}'
+    cf bind-route-service $PCF_DOMAIN apigee_org_service --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'", "action":"proxy bind"}'
     ```
 	
 	
@@ -163,7 +163,11 @@ PCF_SPACE: An org can contain multiple spaces. This is the space you will pick f
     You should see an API Proxy created by the PCF Service Broker- with the following name `cf-{your_initials}_helloapi.YOUR-SYSTEM-DOMAIN`
     Select the API and select `TRACE` tab on the top right
     Click on the `Start Trace Session`, the green button on the top left
-    Send a request to the same endpoint, as you did in step 2 - by copy/pasting the URL under the urls section of your app, to a new browser tab. `https://{URL OF YOUR APP}`
+    Send a request to the same endpoint, as you did in step 2 
+	
+	```
+	curl https://{URL OF YOUR APP} -H "x-api-key: {api-key}"
+	```
       
     If you forgot the URL OF YOUR APP, you can get if through the following command (the output will have a urls section corresponding to your app)
     ```
