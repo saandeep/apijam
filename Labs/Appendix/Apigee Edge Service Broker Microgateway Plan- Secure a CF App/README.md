@@ -1,4 +1,4 @@
-# Apigee Edge Service Broker Org Plan: Secure a CF App
+# Apigee Edge Service Broker Microgateway Plan: Secure a CF App
 
 *Duration : 45 mins*
 
@@ -53,6 +53,49 @@ PCF_DOMAIN: PCF Domain for your apps.
 1. Deploy Edge Microgateway as PCF App
 
 	Follow the instructions from this [Apigee Edge Microgateway for Cloud Foundry Page](https://github.com/apigee/pivotal-cf-apigee/tree/master/microgateway-addons)
+	
+	```
+	git clone https://github.com/apigee-internal/microgateway
+	cd microgateway
+	npm install .
+	edgemicro configure -o $APIGEE_ORG -e $APIGEE_ENV -u {apigee-username}
+	cp ~/.edgemicro/$APIGEE_ORG-$APIGEE_ENV-config.yaml 
+	vi config/$APIGEE_ORG-$APIGEE_ENV-config.yaml 
+	
+	add cloud-foundry-route-service to the sequence - like
+	edgemicro:
+	  port: 8000
+	  max_connections: 1000
+	  ...
+	  plugins:
+	    sequence:
+	      - oauth
+	      - cloud-foundry-route-service
+	
+	Exit and save (:wq)
+	
+	vi manifest.yml
+	---
+	applications:
+	- name: {your_initials}-edgemicro-app
+	  memory: 512M
+	  instances: 1
+	  host: edgemicro-app1
+	  path: .
+	  buildpack: nodejs_buildpack
+	  env:
+	    EDGEMICRO_KEY: 'UPDATE THIS'
+	    EDGEMICRO_SECRET: 'UPDATE THIS'
+	    EDGEMICRO_CONFIG_DIR: '/app/config'
+	    EDGEMICRO_ENV: 'test'
+	    EDGEMICRO_ORG: 'UPADATE WITH APIGEE ORG'
+	    NODE_TLS_REJECT_UNAUTHORIZED: 0
+	
+	Exit and save (:wq)
+	
+	cf push
+	
+	```
 
 2. Deploy a sample App to PCF
 
@@ -126,7 +169,6 @@ PCF_DOMAIN: PCF Domain for your apps.
     ```
     curl https://login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"
     tar xvf ssocli-bundle.zip
-    mkdir ~/.sso-cli
     ./get_token
 	<<export the token to a environment variable>>
 	export APIGEE_TOKEN={token}
@@ -159,7 +201,7 @@ PCF_DOMAIN: PCF Domain for your apps.
     ```
     Now we will bind the app (Our Node.js app that servers the Hello API) to an Apigee ORG with the following command.
     ```
-	export EDGE_MICRO_ENDPOINT=edgemicro-app.apps.apigee-demo.net
+	export EDGE_MICRO_ENDPOINT={your_initials}-edgemicro-app.apps.apigee-demo.net
 	(or if you have a different endpoint)
 	
     cf bind-route-service $PCF_DOMAIN apigee_mg_service --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'","micro":"'$(echo $EDGE_MICRO_ENDPOINT)'", "action":"proxy bind", "protocol":"http"}'
