@@ -61,7 +61,7 @@ PCF_DOMAIN: PCF Domain for your apps.
 	cd microgateway
 	npm install .
 	edgemicro configure -o $APIGEE_ORG -e $APIGEE_ENV -u {apigee-username}
-	cp ~/.edgemicro/$APIGEE_ORG-$APIGEE_ENV-config.yaml 
+	cp ~/.edgemicro/$APIGEE_ORG-$APIGEE_ENV-config.yaml config/ 
 	vi config/$APIGEE_ORG-$APIGEE_ENV-config.yaml 
 	
 	add cloud-foundry-route-service to the sequence - like
