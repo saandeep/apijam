@@ -215,21 +215,41 @@ PCF_DOMAIN: PCF Domain for your apps.
 4. Testing the API
     Login to [https://apigee.com/edge](https://apigee.com/edge)
     Go to API Proxies
-    You should see an API Proxy created by the PCF Service Broker- with the following name `cf-{your_initials}_helloapi.YOUR-SYSTEM-DOMAIN`
+    You should see an API Proxy created by the PCF Service Broker- with the following name `edgemicro_cf-{your_initials}_helloapi.YOUR-SYSTEM-DOMAIN`
+	
+	You will also see `edgemicro-auth` API Proxy. Where requests are sent to for authentication. As edge microgateway does validation, you can see the validation calls coming to this API Proxy
     Select the API and select `TRACE` tab on the top right
     Click on the `Start Trace Session`, the green button on the top left
 	Send a request to the same endpoint, as you did in step 2 
 	
 	```
-	curl https://{URL OF YOUR APP} -H "x-api-key: {api-key}"
+	curl https://{URL OF YOUR APP}"
 	```
       
     If you forgot the URL OF YOUR APP, you can get if through the following command (the output will have a urls section corresponding to your app)
     ```
     cf apps
     ```
-    This time, when you send the request, the requst should show up in the trace of your API Proxy.
-    In essence, the API you have created from PCF is now managed by Apigee. oh, yeah! *Congratulations!*...
+    You should see an validation error as edge micro is checking for security! 
+	
+	To get an API Key, go to Management UI, create an API Product add `edgemicro-auth` and `edgemicro_cf-{your_initials}_helloapi.YOUR-SYSTEM-DOMAIN` API Proxies to it. Create an APP and get a Key. 
+	
+	Come back to CLI restart the edge micro app, for it to get the latest API Products.
+	
+	```
+	cf apps
+	cf restart {your_initials}-edgemicro-app
+	
+
+	curl https://{URL OF YOUR APP} -H "x-api-key: {api-key}"
+
+	```
+	
+	
+	
+
+	
+	*Congratulations!*...
     What does this mean
     - You have analytics across all your APIs, created through PCF
     - You can add authentication, traffic management and few more directly from your cf CLI, without logging into Apigee
