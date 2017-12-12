@@ -24,7 +24,7 @@ This lab describes how to push a sample app to Pivotal Cloud Foundry (PCF), crea
 
 # Instructions
 
-**Important** - Click on this link to get the environment variables and login credentials you need for the next step (The snippet below is a template and does not contain the actual variables)
+**Important** - Click on [this link](https://amer-api-partner19-prod.apigee.net/v1/pcf-apigee?apikey=apZNoolPGfOzMGS1ZTLG5kRGGGhBmAND) to get the environment variables and login credentials you need for the next step (The snippet below is a template and does not contain the actual variables)
 
 If you have an issue retrieving or using the environment variables, ask your instructor.  If you’re completing this lab self-paced, reach out to Edgepartners@google.com.
 
