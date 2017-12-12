@@ -1,0 +1,7 @@
+---
+applications:
+- name: YOUR_INITIALS-employees-api
+  memory: 128M
+  instances: 1
+  path: .
+  buildpack: nodejs_buildpack
