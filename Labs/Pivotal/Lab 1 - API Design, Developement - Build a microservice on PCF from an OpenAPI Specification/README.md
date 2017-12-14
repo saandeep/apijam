@@ -64,7 +64,7 @@ APIGEE_ORG/APIGEE_ENV: Details of the Apigee environment where your Proxies are 
 
 
 2. Deploy a sample App to PCF
-    Download the sample employee api from the [resources folder](./resources/employees-api.zip)
+    Download the sample employee api from the [resources folder](https://github.com/saandeep/apijam/blob/master/Labs/Pivotal/Lab%201%20-%20API%20Design,%20Developement%20-%20Build%20a%20microservice%20on%20PCF%20from%20an%20OpenAPI%20Specification/resources/employees-api.zip?raw=true)
 	The sample code for this API has been generated from the [following spec](http://playground.apistudio.io/070cde0a-44f7-4e2c-8085-6e1020db7baf/spec), though [swagger codegen](https://github.com/swagger-api/swagger-codegen) (sample command swagger-codegen generate -i ./employees-oas.yaml -l nodejs-server -o ./)
 
     Unzip the employees-api.zip folder. Open terminal/command line and point to the employees-api folder that you extracted.
