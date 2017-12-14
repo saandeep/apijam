@@ -99,7 +99,7 @@ APIGEE_ORG/APIGEE_ENV: Details of the Apigee environment where your Proxies are 
 
 
 4. Testing the API
-    You should be able to send a request, by copy/pasting the URL under the urls section of your app, to a new browser tab. `https://{URL OF YOUR APP}`
+    You should be able to send a request, by copy/pasting the URL under the urls section of your app, to a new browser tab. `https://{URL OF YOUR APP}/v1/employees`
     
     ```
     cf apps
