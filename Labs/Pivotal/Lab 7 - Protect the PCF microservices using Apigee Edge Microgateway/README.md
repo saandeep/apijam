@@ -155,7 +155,7 @@ PCF_DOMAIN: PCF Domain for your apps.
     Now we will bind the app (Our Node.js app that servers the Hello API) to an Apigee ORG with the following command.
 	
     ```
-    cf bind-route-service $PCF_DOMAIN apigee_mg_service --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'","micro":"'$(echo $EDGE_MICRO_ENDPOINT)'", "action":"proxy bind", "protocol":"http"}'
+    cf bind-route-service $PCF_DOMAIN apigee_mg_service --hostname $PCF_APPHOST -c '{"org":"'$(echo  $APIGEE_ORG)'","env":"'$(echo  $APIGEE_ENV)'", "bearer":"'$(echo $APIGEE_TOKEN)'","micro":"'$(echo $EDGE_MICRO_ENDPOINT)'", "action":"proxy bind", "protocol":"http", "bind_resource":{"route":"'$(echo $EDGE_MICRO_ENDPOINT)'"}}'
     ```
 	
 	
